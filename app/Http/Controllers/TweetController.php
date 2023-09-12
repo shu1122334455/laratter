@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Tweet;
 
+use App\Models\User;
 use Auth;
 
 class TweetController extends Controller
@@ -96,8 +97,7 @@ class TweetController extends Controller
                 ->withErrors($validator);
         }
 
-        $data = $request->merge(['user_id' => Auth::user()->id])->all();
-        $result = Tweet::create($data);
+
 
         //データ更新処理
         $result = Tweet::find($id)->update($request->all());
@@ -111,5 +111,15 @@ class TweetController extends Controller
     {
         $result = Tweet::find($id)->delete();
         return redirect()->route('tweet.index');
+    }
+    public function mydata()
+    {
+        // Userモデルに定義したリレーションを使用してデータを取得する．
+        $tweets = User::query()
+            ->find(Auth::user()->id)
+            ->userTweets()
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return response()->view('tweet.index', compact('tweets'));
     }
 }
