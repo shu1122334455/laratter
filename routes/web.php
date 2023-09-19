@@ -7,6 +7,8 @@ use App\Http\Controllers\TweetController;
 // 🔽 追加
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\SearchController;
+
 
 
 
@@ -22,6 +24,12 @@ use App\Http\Controllers\FollowController;
 */
 
 Route::middleware('auth')->group(function () {
+    // 🔽 追加（検索画面）
+    Route::get('/tweet/search/input', [SearchController::class, 'create'])->name('search.input');
+    // 🔽 追加（検索処理）
+    Route::get('/tweet/search/result', [SearchController::class, 'index'])->name('search.result');
+    Route::get('/tweet/timeline', [TweetController::class, 'timeline'])->name('tweet.timeline');
+
     Route::post('user/{user}/follow', [FollowController::class, 'store'])->name('follow');
     Route::post('user/{user}/unfollow', [FollowController::class, 'destroy'])->name('unfollow');
     // 🔽 2つ追加
@@ -41,6 +49,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('user/{user}', [FollowController::class, 'show'])->name('follow.show');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
