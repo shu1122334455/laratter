@@ -3,11 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TweetController;
-
-// 🔽 追加
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\MailController;
+
+
 
 
 
@@ -38,6 +39,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/tweet/mypage', [TweetController::class, 'mydata'])->name('tweet.mypage');
     Route::resource('tweet', TweetController::class);
+
+    Route::get('/mail', [MailController::class, 'index'])->name('send.index');
+    Route::post('/mail', [MailController::class, 'send']);
 });
 
 Route::get('/', function () {
