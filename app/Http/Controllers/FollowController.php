@@ -74,4 +74,16 @@ class FollowController extends Controller
         Auth::user()->followings()->detach($user->id);
         return redirect()->back();
     }
+    public function follow(User $user)
+    {
+        $currentUser = Auth::user();
+
+        // 現在のユーザーが既にターゲットユーザーをフォローしていないか確認
+        if (!$currentUser->followings()->where('users.id', $user->id)->exists()) {
+            // していない場合、ユーザーをフォロー
+            $currentUser->followings()->attach($user);
+        }
+
+        return redirect()->back();
+    }
 }
