@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendTestMail extends Mailable
+class Test extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;      //追加

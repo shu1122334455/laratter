@@ -87,6 +87,38 @@
                                             </x-primary-button>
                                         </form>
                                         @endif
+                                        <div class="flex">
+                                            <p class="text-left text-gray-800 dark:text-gray-200">{{$tweet->user->name}}</p>
+                                            <!-- 見ました 状態で条件分岐 -->
+                                            @if(Auth::user()->followings()->where('users.id', $tweet->user->id)->exists())
+                                            <!-- 見ました ボタン -->
+                                            <form action="{{ route('unfollow', $tweet->user) }}" method="POST" class="text-left">
+                                                @csrf
+                                                <x-primary-button class="ml-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    {{ $tweet->user->followers()->count() }}
+                                                </x-primary-button>
+                                            </form>
+                                            @else
+                                            <!-- follow ボタン -->
+                                            <form action="{{ route('follow', $tweet->user) }}" method="POST" class="text-left">
+                                                @csrf
+                                                <x-primary-button class="ml-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    {{ $tweet->user->followers()->count() }}
+                                                </x-primary-button>
+                                            </form>
+                                            @endif
+                                        </div>
+                                        <a href="{{ route('tweet.show',$tweet->id) }}">
+                                            <h3 class="text-left font-bold text-lg text-gray-800 dark:text-gray-200">{{$tweet->tweet}}</h3>
+                                        </a>
                                         <!-- 🔽 条件分岐でログインしているユーザが投稿したtweetのみ編集ボタンと削除ボタンが表示される -->
                                         @if ($tweet->user_id === Auth::user()->id)
                                         <!-- 更新ボタン -->

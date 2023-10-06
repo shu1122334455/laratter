@@ -7,6 +7,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\ImageController;
 
 
 
@@ -40,8 +41,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/tweet/mypage', [TweetController::class, 'mydata'])->name('tweet.mypage');
     Route::resource('tweet', TweetController::class);
 
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
     Route::get('/mail', [MailController::class, 'index'])->name('send.index');
     Route::post('/mail', [MailController::class, 'send']);
+
+
+    Route::get('/', [ImageController::class, 'index']);
+    Route::post('/upload', [ImageController::class, 'upload'])->name('upload');
 });
 
 Route::get('/', function () {
