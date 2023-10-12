@@ -13,10 +13,8 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
-    ],
+    'default' => env('MAIL_MAILER', 'smtp'),
+
 
     /*
     |--------------------------------------------------------------------------

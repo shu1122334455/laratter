@@ -37,6 +37,15 @@ Route::middleware('auth')->group(function () {
     // 🔽 2つ追加
     Route::post('tweet/{tweet}/favorites', [FavoriteController::class, 'store'])->name('favorites');
     Route::post('tweet/{tweet}/unfavorites', [FavoriteController::class, 'destroy'])->name('unfavorites');
+    // お気に入りの追加
+    Route::get('/tweet/addFavorite/{tweet}', [FavoriteController::class, 'addFavorite'])->name('addFavorite');
+    // お気に入りの削除
+    Route::get('/tweet/removeFavorite/{tweet}', [FavoriteController::class, 'removeFavorite'])->name('removeFavorite');
+
+
+
+
+
 
     Route::get('/tweet/mypage', [TweetController::class, 'mydata'])->name('tweet.mypage');
     Route::resource('tweet', TweetController::class);
@@ -51,6 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/', [ImageController::class, 'index']);
     Route::post('/upload', [ImageController::class, 'upload'])->name('upload');
+    Route::get('/', [ImageController::class, 'someControllerMethod'])->name('upload');
 });
 
 Route::get('/', function () {

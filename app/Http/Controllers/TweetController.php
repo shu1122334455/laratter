@@ -37,24 +37,18 @@ class TweetController extends Controller
 
     public function store(Request $request)
     {
-        // バリデーション
-        $validator = Validator::make($request->all(), [
-            'tweet' => 'required | max:191',
-            'description' => 'required',
+        $validatedData = $request->validate([
+            'new_tweet' => 'required|max:255',
         ]);
-        // バリデーション:エラー
-        if ($validator->fails()) {
-            return redirect()
-                ->route('tweet.create')
-                ->withInput()
-                ->withErrors($validator);
-        }
-        // create()は最初から用意されている関数
-        // 戻り値は挿入されたレコードの情報
-        $result = Tweet::create($request->all());
-        // ルーティング「todo.index」にリクエスト送信（一覧ページに移動）
-        return redirect()->route('tweet.index');
+
+        $tweet = new Tweet;
+        $tweet->user_id = auth()->user()->id;
+        $tweet->tweet = $validatedData['new_tweet'];
+        $tweet->save();
+
+        return redirect()->route('tweets.index');
     }
+
 
 
 
@@ -82,27 +76,26 @@ class TweetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //バリデーション
-        $validator = Validator::make($request->all(), [
-            'tweet' => 'required | max:191',
-            'description' => 'required',
+        $request->validate([
+            'tweet' => 'required|string|max:255',
         ]);
-        //バリデーション:エラー
-        if ($validator->fails()) {
-            return redirect()
-                ->route('tweet.edit', $id)
-                ->withInput()
-                ->withErrors($validator);
-        }
+        $tweet = Tweet::find($id);
+        $tweet->update([
+            'tweet' => $request->input('tweet'),
+        ]);
+        $tweet = Tweet::findOrFail($id);
 
+        $tweet->tweet = $request->input('tweet');
+        $tweet->description = $request->input('description'); // 新しいフィールド
 
+        $tweet->save();
 
-        //データ更新処理
-        $result = Tweet::find($id)->update($request->all());
-        return redirect()->route('tweet.index');
+        return redirect()->route('tweet.show', $tweet->id)->with('success', 'Tweet updated successfully');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -59,4 +59,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class, "follows", "following_id", "user_id")->withTimestamps();
     }
+    // User.php モデル内の favorites リレーションを修正
+    public function favorites()
+    {
+        return $this->belongsToMany(Tweet::class, 'favorites', 'user_id', 'tweet_id')
+            ->withTimestamps();
+    }
 }
