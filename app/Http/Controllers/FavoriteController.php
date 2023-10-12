@@ -71,4 +71,17 @@ class FavoriteController extends Controller
         $tweet->users()->detach(Auth::id());
         return redirect()->route('tweet.index');
     }
+    public function addFavorite($tweetId)
+    {
+        $user = Auth::user();
+        $user->favorites()->attach($tweetId);
+        return redirect()->back();
+    }
+
+    public function removeFavorite($tweetId)
+    {
+        $user = Auth::user();
+        $user->favorites()->detach($tweetId);
+        return redirect()->back();
+    }
 }

@@ -14,27 +14,7 @@
             </div>
         </div>
     </div>
-    <!DOCTYPE html>
-    <html>
 
-    <head>
-        <title>Laravel Image Upload</title>
-    </head>
-
-    <body>
-        @if (session('success'))
-        <div>{{ session('success') }}</div>
-        @endif
-
-        <form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="file" name="image">
-            <button type="submit">アップロード</button>
-        </form>
-
-        @foreach ($images as $image)
-        <img src="{{ asset('storage/uploads/' . $image->filename) }}" alt="アップロードされた画像">
-        @endforeach
     </body>
 
     </html>
